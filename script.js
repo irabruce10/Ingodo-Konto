@@ -94,24 +94,52 @@ const createUserName = () => {
 createUserName()
 
 
+
+const displayMouvement = function () {
+
+
+  movements.forEach((mov, i) => {
+
+    let type = mov > 0 ? 'deposit' : 'withdrawal'
+
+    const html = `
+    <div class="movements__row">
+      <div class="movements__type movements__type--${type}">${i + 1
+      } ${type}</div>
+      <div class="movements__value">${mov}€</div>
+    </div>
+  `;
+
+    containerMovements.insertAdjacentHTML('afterbegin', html);
+
+  })
+}
+
+displayMouvement()
+
+
+
 let currentAccount
+
+//LOGIN
 
 btnLogin.addEventListener('click', e => {
   e.preventDefault()
 
-
   currentAccount = accounts.find(acc => acc.userName === inputLoginUsername.value)
-
 
   if (currentAccount?.pin === Number(inputLoginPin.value)) {
 
-
     labelWelcome.textContent = `Welcome again,${currentAccount.owner.split(' ')[0]}`
-    containerApp.style.opacity = 100
+
+  } else {
+    alert('login incorrect!!!!!')
   }
+
+  containerApp.style.opacity = 100
 
   inputLoginUsername.value = inputLoginPin.value = ''
 
-
+  inputLoginPin.blur()
 
 })
