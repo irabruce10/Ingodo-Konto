@@ -27,6 +27,8 @@ const account3 = {
 
 const accounts = [account1, account2, account3];
 
+
+
 // Elements
 const labelWelcome = document.querySelector('.welcome');
 const labelDate = document.querySelector('.date');
@@ -102,8 +104,35 @@ const renderMovement = function (movs) {
 
 }
 
-const updataUI = function (acc) {
+const income = function (acc) {
+
+  const sum = acc.movements.filter(acc => acc > 0).reduce((acc, cur) => acc + cur)
+
+  labelSumIn.textContent = sum
+
+}
+
+const depit = function (acc) {
+  let depo = acc.movements.filter(acc => acc < 0).reduce((curr, acc) => curr + acc)
+
+  labelSumOut.textContent = depo
+}
+
+const calcBalance = function (acc) {
+  let balances = acc.movements.reduce((acc, curr) => acc + curr)
+  acc.balance = balances
+
+  labelBalance.textContent = balances
+
+}
+
+
+const updateUI = function (acc) {
+
   renderMovement(acc.movements)
+  income(acc)
+  depit(acc)
+  calcBalance(acc)
 }
 
 let currentAccount
@@ -122,27 +151,39 @@ btnLogin.addEventListener('click', function (e) {
     inputLoginPin.value = inputLoginUsername.value = ''
 
 
-    updataUI(currentAccount)
+    updateUI(currentAccount)
 
   }
 
 })
 
+
+
+
+
+
+
+
 btnTransfer.addEventListener('click', function (e) {
 
   e.preventDefault()
-  inputTransferAmount.value = inputTransferTo.value = ''
+
 
   let amount = inputTransferAmount.value
 
+
   let receiver = accounts.find(acc => acc.user === inputTransferTo.value)
+
+
 
   if (amount > 0) {
     currentAccount.movements.push(-amount)
     receiver.movements.push(amount)
 
-    updataUI(currentAccount)
+    updateUI(currentAccount)
   }
+
+  inputTransferAmount.value = inputTransferTo.value = ''
 
 
 })
