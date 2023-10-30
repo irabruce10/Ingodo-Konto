@@ -105,22 +105,25 @@ const renderMovement = function (movs) {
 
 }
 
-const income = function (acc) {
-
-  const sum = acc.movements.filter(acc => acc > 0).reduce((acc, cur) => acc + cur)
-
-  labelSumIn.textContent = sum
-
+const incomes = function (acc) {
+  let a = acc.movements
+    .filter(mov => mov > 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumIn.textContent = `${a}€`;
 }
 
-const depit = function (acc) {
-  let depo = acc.movements.filter(acc => acc < 0).reduce((curr, acc) => curr + acc)
 
-  labelSumOut.textContent = depo
+
+const out = function (acc) {
+  let b = acc.movements
+    .filter(mov => mov < 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumOut.textContent = `${Math.abs(b)}€`;
 }
+
 
 const calcBalance = function (acc) {
-  let balances = acc.movements.reduce((acc, curr) => acc + curr)
+  let balances = acc.movements.reduce((acc, curr) => acc + curr, 0)
   acc.balance = balances
 
   labelBalance.textContent = balances
@@ -131,10 +134,11 @@ const calcBalance = function (acc) {
 const updateUI = function (acc) {
 
   renderMovement(acc.movements)
-  income(acc)
-  depit(acc)
+  incomes(acc)
+  out(acc)
   calcBalance(acc)
 }
+
 
 let currentAccount
 
@@ -164,14 +168,18 @@ btnTransfer.addEventListener('click', function (e) {
   e.preventDefault()
 
 
-  let amount = inputTransferAmount.value
+  let amount = +inputTransferAmount.value
 
 
   let receiver = accounts.find(acc => acc.user === inputTransferTo.value)
 
 
 
-  if (amount > 0) {
+  if (amount > 0 &&
+    receiver &&
+    currentAccount.balance >= amount &&
+    receiver?.username !== currentAccount.user) {
+
     currentAccount.movements.push(-amount)
     receiver.movements.push(amount)
 
