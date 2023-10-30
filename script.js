@@ -134,9 +134,6 @@ const displaySum = function (acc) {
 }
 
 
-
-
-
 let currentAccount
 
 //LOGIN
@@ -169,3 +166,13 @@ btnLogin.addEventListener('click', e => {
 
 
 })
+
+
+btnLoan.addEventListener('click', e => {
+  e.preventDefault()
+
+  accounts.find(mov => {
+
+  })
+})
+
