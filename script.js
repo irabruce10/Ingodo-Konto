@@ -42,6 +42,7 @@ const containerMovements = document.querySelector('.movements');
 
 const btnLogin = document.querySelector('.login__btn');
 const btnTransfer = document.querySelector('.form__btn--transfer');
+const btnLoan = document.querySelector('.form__btn--loan');
 
 
 
@@ -158,12 +159,6 @@ btnLogin.addEventListener('click', function (e) {
 })
 
 
-
-
-
-
-
-
 btnTransfer.addEventListener('click', function (e) {
 
   e.preventDefault()
@@ -187,6 +182,24 @@ btnTransfer.addEventListener('click', function (e) {
 
 
 })
+
+
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  const amount = Number(inputLoanAmount.value);
+
+  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
+    // Add movement
+    currentAccount.movements.push(amount);
+
+    // Update UI
+    updateUI(currentAccount);
+  }
+  inputLoanAmount.value = '';
+});
+
+
 
 
 
