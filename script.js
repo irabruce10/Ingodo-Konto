@@ -54,7 +54,7 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 /////////////////////////////////////////////////
 // LECTURES
 
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300]
+
 
 
 
@@ -71,7 +71,7 @@ const createUser = function () {
 
     acc.psw = pin
 
-    console.log(acc)
+
   })
 
 }
@@ -106,18 +106,13 @@ const updataUI = function (acc) {
   renderMovement(acc.movements)
 }
 
-
-
 let currentAccount
-
 
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault()
 
 
   currentAccount = accounts.find(acc => acc.user === inputLoginUsername.value)
-
-
 
   if (currentAccount?.psw === inputLoginPin.value) {
 
@@ -129,15 +124,25 @@ btnLogin.addEventListener('click', function (e) {
 
     updataUI(currentAccount)
 
-
   }
 
+})
 
+btnTransfer.addEventListener('click', function (e) {
 
+  e.preventDefault()
+  inputTransferAmount.value = inputTransferTo.value = ''
 
+  let amount = inputTransferAmount.value
 
+  let receiver = accounts.find(acc => acc.user === inputTransferTo.value)
 
+  if (amount > 0) {
+    currentAccount.movements.push(-amount)
+    receiver.movements.push(amount)
 
+    updataUI(currentAccount)
+  }
 
 
 })
