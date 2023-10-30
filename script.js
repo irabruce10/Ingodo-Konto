@@ -8,16 +8,19 @@
 const account1 = {
   owner: 'Bruce IRAKOZE',
   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
+
 };
 
 const account2 = {
   owner: 'Micha Ciella',
   movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
+
 };
 
 const account3 = {
   owner: 'Guest ',
   movements: [200, -200, 340, -300, -20, 50, 400, -460],
+
 };
 
 
@@ -51,8 +54,98 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 /////////////////////////////////////////////////
 // LECTURES
 
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300]
 
 
-/////////////////////////////////////////////////
+
+const createUser = function () {
+
+  accounts.forEach(acc => {
+    let userName = acc.owner.split(' ').map(name => name.slice(' ')[0]).join('').toLocaleLowerCase()
+
+    let pin = acc.owner.split(' ').map(name => name.slice(' ')[0]).join('')
+      .toLocaleLowerCase() + 11
+
+
+    acc.user = userName
+
+    acc.psw = pin
+
+    console.log(acc)
+  })
+
+}
+
+createUser(accounts)
+
+///////////////////////////////////////////////
+
+const renderMovement = function (movs) {
+
+  containerMovements.textContent = ''
+
+  movs.forEach((mvt, i) => {
+    let type = mvt > 0 ? 'deposit' : 'withdrawal'
+    let html = `
+
+    <div class="movements__row">
+     <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
+     <div class="movements__date">3 days ago</div>
+     <div class="movements__value">${mvt}€</div>
+    </div>
+
+   `
+
+    containerMovements.insertAdjacentHTML('afterbegin', html)
+  })
+
+
+}
+
+const updataUI = function (acc) {
+  renderMovement(acc.movements)
+}
+
+
+
+let currentAccount
+
+
+btnLogin.addEventListener('click', function (e) {
+  e.preventDefault()
+
+
+  currentAccount = accounts.find(acc => acc.user === inputLoginUsername.value)
+
+
+
+  if (currentAccount?.psw === inputLoginPin.value) {
+
+    labelWelcome.innerHTML = `Welcome again, ${currentAccount.owner.split(' ')[0]}`
+
+    containerApp.style.opacity = 10
+    inputLoginPin.value = inputLoginUsername.value = ''
+
+
+    updataUI(currentAccount)
+
+
+  }
+
+
+
+
+
+
+
+
+
+})
+
+
+
+
+
+
 
 
